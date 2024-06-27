@@ -1,0 +1,41 @@
+# Ignore the large model file
+mixtral-8x7b-instruct-v0.1.Q4_K_M.gguf
+
+# Python virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Outputs
+qa_pairs_output.txt
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific files (add more if you use different IDEs)
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Log files
+*.log
+
+# Processed PDF outputs (if you want to ignore these)
+*.txt
+
+# Ignore all files in the pdfs directory
+pdfs/*
+# But don't ignore the directory itself
+!pdfs/.gitkeep
