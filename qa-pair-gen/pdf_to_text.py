@@ -69,11 +69,8 @@ def process_pdf_folder(input_folder, output_folder):
             print(f"Processed {filename}")
 
 if __name__ == "__main__":
-    # Get the directory of the current script
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    # Define relative paths
     input_folder = os.path.join(current_dir, "pdfs")
-    output_folder = current_dir  # This will output to the same directory as the script
-    
+    output_folder = os.path.join(current_dir, "processed_texts")
     process_pdf_folder(input_folder, output_folder)
+

@@ -3,6 +3,7 @@ import subprocess
 import pkg_resources
 import os
 import requests
+import json  # New import for JSON handling
 
 # Check and install required packages
 required = {'requests'}
@@ -21,7 +22,6 @@ def read_contexts_from_files(folder_path):
                 sections = f.read().split('\n\n')
                 for section in sections:
                     if section.startswith("Section"):
-                        # Remove the "Section X:" prefix and add to contexts
                         context = section.split(':', 1)[1].strip()
                         contexts.append(context)
     return contexts
@@ -41,19 +41,27 @@ def generate_qa_pair(context):
     response = requests.post(url, json=data)
     return response.json()['content']
 
+# Updated to output JSON
 def process_contexts(contexts, output_file):
+    qa_pairs = []
+    for i, context in enumerate(contexts, 1):
+        qa_pair = generate_qa_pair(context)
+        qa_pairs.append({"id": i, "qa_pair": qa_pair})
+        print(f"Processed QA pair {i}")
+
     with open(output_file, 'w', encoding='utf-8') as f:
-        for i, context in enumerate(contexts, 1):
-            qa_pair = generate_qa_pair(context)
-            f.write(f"QA Pair {i}:\n{qa_pair}\n\n")
-            print(f"Processed QA pair {i}")
+        json.dump(qa_pairs, f, indent=2)
 
 if __name__ == "__main__":
     # Get the directory of the current script
     current_dir = os.path.dirname(os.path.abspath(__file__))
     
-    # Use the current directory to read contexts and write output
-    contexts = read_contexts_from_files(current_dir)
-    output_file = os.path.join(current_dir, "qa_pairs_output.txt")
+    # Changed: Use a specific folder for input and changed output file name
+    input_folder = os.path.join(current_dir, "processed_texts")
+    output_file = os.path.join(current_dir, "qa_pairs_output.json")
     
+    print(f"Saving output to: {output_file}")  # Moved this line here
+    
+    # Changed: Read contexts from the specific input folder
+    contexts = read_contexts_from_files(input_folder)
     process_contexts(contexts, output_file)
